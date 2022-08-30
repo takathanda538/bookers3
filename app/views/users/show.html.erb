@@ -1,7 +1,19 @@
 <div class= "container">
   <div class="row">
     <div class= "col-md-3">
-      <%= render 'info', user: @user %>
+    <%= render 'info', user: @user %>
+      <% unless @user.id == current_user.id %>    #現在ログインしているユーザーではない場合
+        <% if @haveRoom == true %>    #既にルームが作成されている場合は
+         <%= link_to "ダイレクトメッセージ", room_path %>    #そのチャットルームに遷移するボタンを表示
+        <% else %>
+          <%= form_with model: @room, local: true do |f|%>    #roomsテーブルに情報を送信
+            <%= fields_for @RoomUser do |r| %>    #room_usersテーブルに情報を送信
+             <%= r.hidden_field :user_id, value: @user.id %>  room_usersテーブルにuser_idを含める
+            <% end %>
+            <%= f.submit "チャットを始める" %>
+          <% end %>
+        <% end %>
+      <% end %>
       <%= render 'books/book', book: @book %>
     </div>
     <div class= "col-md-8 offset-md-1">

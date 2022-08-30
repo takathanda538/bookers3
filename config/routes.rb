@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'rooms/index'
+  get 'rooms/show'
   root to: 'homes#top'
   
   get 'homes/about' , as: "about"
@@ -11,6 +13,9 @@ Rails.application.routes.draw do
     resources :book_comments, only: [:create, :destroy]
     resource :favorites, only: [:create, :destroy]
   end
+  
+  resources :messages, only: [:create]
+  resources :rooms, only: [:create, :index, :show]
   
   resources :users do
       get :follows, on: :member
